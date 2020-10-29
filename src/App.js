@@ -1,19 +1,21 @@
-import React from 'react';
-import { Router } from 'react-router-dom';
+import React from "react";
+import { Router } from "react-router-dom";
 
-import Routes from './routes';
-import history from './history';
+import GlobalStyles from "./styles/global";
 
-import { AuthProvider } from './Context/AuthContext';
+import Routes from "./routes";
+import history from "./history";
+import ProviderContexts from "./Context/dataContext";
 
 function App() {
-  return (
-    <AuthProvider>
-      <Router history={history}>
-        <Routes />
-      </Router>
-    </AuthProvider>
-  );
+	return (
+		<ProviderContexts>
+			<Router history={history}>
+				<GlobalStyles />
+				<Routes />
+			</Router>
+		</ProviderContexts>
+	);
 }
 
 export default App;

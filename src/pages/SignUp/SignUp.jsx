@@ -1,20 +1,30 @@
-import React, { useContext, useRef } from "react";
+import React from "react";
 
 import Button from "../../components/Button";
-
-// import { Context } from "../../Context/AuthContext";
+import apiFirebase from "../../firebase/apiFirebase";
+import history from "../../history";
+import { useUserData } from "../../Context/dataContext";
 
 import { Container } from "./style";
 
 export default function Login() {
-	// const { handleSignUp } = useContext(Context);
-	// const userNameRef = useRef(null);
-	// const email = useRef(null);
-	// const passwordRef = useRef(null);
+	const { setDataUser } = useUserData();
+	async function handleLoginFace() {
+		let result = await apiFirebase.fbPopup();
+		if (result) {
+			history.push("/account");
+			setDataUser(result.user);
+		} else {
+			alert("Oops..Seu login falhou");
+		}
+	}
+
 	return (
 		<Container>
 			<h1>Jera Movies</h1>
-			<Formik initialValues={{}} onSubmit={handleSignUp}>
+			<Button content="Entrar com o facebook" click={handleLoginFace} />
+
+			{/* <Formik initialValues={{}} onSubmit={handleSignUp}>
 				<Form
 					id="form"
 					onSubmit={() => handleSignUp(this, userNameRef, email, passwordRef)}
@@ -34,7 +44,7 @@ export default function Login() {
 					/>
 					<Button content="SignUp" />
 				</Form>
-			</Formik>
+			</Formik> */}
 		</Container>
 	);
 }

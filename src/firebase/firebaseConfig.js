@@ -1,4 +1,4 @@
-var firebaseConfig = {
+export default {
 	apiKey: "AIzaSyAOlFfze_MxisCkPid3ib6FRPR1g2h_pWw",
 	authDomain: "processo-jera.firebaseapp.com",
 	databaseURL: "https://processo-jera.firebaseio.com",
