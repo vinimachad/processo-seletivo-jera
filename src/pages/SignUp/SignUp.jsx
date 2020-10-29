@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 import Button from "../../components/Button";
 import apiFirebase from "../../firebase/apiFirebase";
@@ -8,7 +8,11 @@ import { useUserData } from "../../Context/dataContext";
 import { Container } from "./style";
 
 export default function Login() {
-	const { setDataUser, dataUser } = useUserData();
+	const emailRef = useRef("");
+	const passRef = useRef("");
+	const userNameRef = useRef("");
+
+	const { setDataUser } = useUserData();
 	async function handleLoginFace() {
 		let result = await apiFirebase.fbPopup();
 		if (result) {
@@ -23,33 +27,31 @@ export default function Login() {
 			alert("Oops..Seu login falhou");
 		}
 	}
-
+	function handleSignUp(e) {
+		e.preventDefault();
+		let email = emailRef.current?.value;
+		let pass = passRef.current?.value;
+		apiFirebase.createMailPass(email, pass);
+	}
 	return (
 		<Container>
 			<h1>Jera Movies</h1>
-			<Button content="Entrar com o facebook" click={handleLoginFace} />
-
-			{/* <Formik initialValues={{}} onSubmit={handleSignUp}>
-				<Form
-					id="form"
-					onSubmit={() => handleSignUp(this, userNameRef, email, passwordRef)}
-				>
-					<Field
-						type="text"
-						placeholder="Nome de usuario"
-						name="user"
-						ref={userNameRef}
-					/>
-					<Field type="email" placeholder="Email" name="email" ref={email} />
-					<Field
-						type="password"
-						placeholder="Senha"
-						name="password"
-						ref={passwordRef}
-					/>
-					<Button content="SignUp" />
-				</Form>
-			</Formik> */}
+			<form id="form" onSubmit={handleSignUp}>
+				<input
+					type="text"
+					placeholder="Nome de usuario"
+					name="user"
+					ref={userNameRef}
+				/>
+				<input type="email" placeholder="Email" name="email" ref={emailRef} />
+				<input type="password" placeholder="Senha" name="password" ref={passRef} />
+				<Button content="Cadastrar" />
+			</form>
+			<Button
+				color="#0D8AF0"
+				content="Entrar com o facebook"
+				click={handleLoginFace}
+			/>
 		</Container>
 	);
 }

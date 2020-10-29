@@ -2,9 +2,9 @@ import React from "react";
 
 import { Container } from "./styles";
 
-const Button = ({ content, click }) => {
+const Button = ({ content, click, color }) => {
 	return (
-		<Container type="submit" onClick={click}>
+		<Container color={color} type="submit" onClick={click}>
 			{content}
 		</Container>
 	);

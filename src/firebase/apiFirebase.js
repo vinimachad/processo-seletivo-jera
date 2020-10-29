@@ -1,6 +1,7 @@
 import firebase from "firebase/app";
 import "firebase/firebase-auth";
 import "firebase/firebase-firestore";
+import history from "../history";
 
 import firebaseConfig from "./firebaseConfig";
 
@@ -8,6 +9,25 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
 
 export default {
+	createMailPass: async (email, password) => {
+		firebase
+			.auth()
+			.createUserWithEmailAndPassword(email, password)
+			.then((res) => {
+				history.push("/account");
+			})
+			.catch((err) => {
+				alert(err);
+			});
+	},
+	loginMailPass: async (email, password) => {
+		firebase
+			.auth()
+			.signInWithEmailAndPassword(email, password)
+			.catch((err) => {
+				alert(err);
+			});
+	},
 	fbPopup: async () => {
 		const provider = new firebase.auth.FacebookAuthProvider();
 		let result = await firebaseApp.auth().signInWithPopup(provider);
