@@ -8,12 +8,17 @@ import { useUserData } from "../../Context/dataContext";
 import { Container } from "./style";
 
 export default function Login() {
-	const { setDataUser } = useUserData();
+	const { setDataUser, dataUser } = useUserData();
 	async function handleLoginFace() {
 		let result = await apiFirebase.fbPopup();
 		if (result) {
-			history.push("/account");
-			setDataUser(result.user);
+			await setDataUser(result.user);
+			await apiFirebase.addUser({
+				id: result.user.uid,
+				name: result.user.displayName,
+				avatar: result.user.photoURL,
+			});
+			await history.push("/account");
 		} else {
 			alert("Oops..Seu login falhou");
 		}
