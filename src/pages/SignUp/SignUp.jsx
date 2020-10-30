@@ -22,8 +22,8 @@ export default function Login() {
 				email: result.user.email,
 				avatar: result.user.photoURL,
 			});
-			await history.push("/account");
 			setAuthenticated(true);
+			history.push("/account");
 		} else {
 			alert("Oops..Seu login falhou");
 		}
@@ -34,13 +34,19 @@ export default function Login() {
 		let email = emailRef.current?.value;
 		let pass = passRef.current?.value;
 		await apiFirebase.createMailPass(email, pass);
-		apiFirebase.addUser({
-			name: user,
-			avatar: null,
-			email,
-		});
-		await history.push("/account");
-		setAuthenticated(true);
+		apiFirebase
+			.addUser({
+				name: user,
+				avatar: null,
+				email,
+			})
+			.then((res) => {
+				history.push("/account");
+				setAuthenticated(true);
+			})
+			.catch((err) => {
+				alert(err);
+			});
 	}
 	return (
 		<Container>

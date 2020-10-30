@@ -15,9 +15,15 @@ const Component = () => {
 		e.preventDefault();
 		let email = emailRef.current?.value;
 		let pass = passRef.current?.value;
-		apiFirebase.loginMailPass(email, pass);
-		history.push("/account");
-		setAuthenticated(true);
+		apiFirebase
+			.loginMailPass(email, pass)
+			.then((res) => {
+				history.push("/account");
+				setAuthenticated(true);
+			})
+			.catch((err) => {
+				alert(err);
+			});
 	}
 
 	return (
