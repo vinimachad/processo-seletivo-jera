@@ -7,20 +7,15 @@ import firebaseConfig from "./firebaseConfig";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const db = firebaseApp.firestore();
-
-export default {
-	createMailPass: async (email, password) => {
-		firebase
-			.auth()
-			.createUserWithEmailAndPassword(email, password)
-			.catch((err) => {
-				alert(err);
-			});
-	},
+modmodeexport default {
 	loginMailPass: async (email, password) => {
 		firebase
 			.auth()
 			.signInWithEmailAndPassword(email, password)
+			.then((res) => {
+				const user = firebase.auth().currentUser;
+				history.push(`/account/${user.uid}`);
+			})
 			.catch((err) => {
 				alert(err);
 			});
@@ -41,32 +36,52 @@ export default {
 	},
 	addUser: async (u) => {
 		let user = firebase.auth().currentUser;
-		await db.collection("users").doc(user.uid).set(
-			{
-				name: u.name,
-				email: u.email,
-				avatar: u.avatar,
-			},
-			{ merge: true }
-		);
-	},
-	addInUser: async (id, typeAcc, idMark, idWatch) => {
 		await db
 			.collection("users")
-			.doc(id)
-			.set({
-				type:
-					typeAcc === "kid"
-						? {
-								typeAcc,
-								myListMovies: [idMark],
-								isWatch: [idWatch],
-						  }
-						: {
-								typeAcc,
-								myListMovies: [idMark],
-								isWatch: [idWatch],
-						  },
-			});
+			.doc(user.uid)
+			.set(
+				{
+					name: u.name,
+					email: u.email,
+					avatar: u.avatar,
+					adult: {
+						listMark: [],
+						listWatch: [],
+					},
+					kid: {
+						listMark: [],
+						listWatch: [],
+					},
+				},
+				{ merge: true }
+			);
+	},
+	updateUser: async (id, typeAcc, idMark, idWatch) => {
+		let userRef = await db.collection("users").doc(id);
+		let getData = await userRef.get();
+		let data = await getData.data();
+		let { kid, adult } = data;
+		if (typeAcc === "kid") {
+			await db
+				.collection("users")
+				.doc(id)
+				.update({
+					kid: {
+						listMark: [...kid.listMark, idMark],
+						listWatch: [],
+					},
+				});
+		}
+		if (typeAcc === "adult") {
+			await db
+				.collection("users")
+				.doc(id)
+				.update({
+					adult: {
+						listMark: [...adult.listMark, idMark],
+						listWatch: [],
+					},
+				});
+		}
 	},
 };

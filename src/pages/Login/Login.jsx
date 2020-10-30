@@ -20,8 +20,6 @@ const Component = () => {
 			.loginMailPass(email, pass)
 			.then((res) => {
 				setAuthenticated(true);
-				let user = firebase.auth().currentUser;
-				history.push(`/account/${user.uid}`);
 			})
 			.catch((err) => {
 				alert(err);

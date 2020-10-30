@@ -33,19 +33,20 @@ export default function Login() {
 	}
 	async function handleSignUp(e) {
 		e.preventDefault();
-		let user = userNameRef.current?.value;
+		let userN = userNameRef.current?.value;
 		let email = emailRef.current?.value;
 		let pass = passRef.current?.value;
-		await apiFirebase.createMailPass(email, pass);
-		apiFirebase
-			.addUser({
-				name: user,
-				avatar: null,
-				email,
-			})
+		let createUser = await firebase
+			.auth()
+			.createUserWithEmailAndPassword(email, pass)
 			.then((res) => {
-				setAuthenticated(true);
+				apiFirebase.addUser({
+					name: userN,
+					email: email,
+					avatar: null,
+				});
 				let user = firebase.auth().currentUser;
+				setAuthenticated(true);
 				history.push(`/account/${user.uid}`);
 			})
 			.catch((err) => {

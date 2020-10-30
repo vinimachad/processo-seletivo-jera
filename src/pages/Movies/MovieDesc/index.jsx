@@ -19,7 +19,7 @@ const MovieDesc = () => {
 	}, []);
 
 	function handleSaveMyList() {
-		let save = apiFirebase.addInUser(id, type, idMovie, idMovie);
+		let save = apiFirebase.updateUser(id, type, idMovie, idMovie);
 		return save;
 	}
 	function handleMarkWatch() {}
