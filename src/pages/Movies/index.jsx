@@ -1,22 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import { Container } from "./styles";
 import axios from "axios";
+import { MdBookmark } from "react-icons/md";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
-
+import { API_KEY } from "../../Tmdb";
 const Movies = () => {
+	const searchRef = useRef("");
+
 	const [listMovies, setListMovies] = useState([""]);
 	useEffect(() => {
 		axios
 			.get(
-				"https://api.themoviedb.org/3/discover/movie?api_key=38a0f840bcdd9b076080321a8e9000f0&sort_by=popularity.desc&certification_country=BR"
+				`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
 			)
 			.then((res) => setListMovies(res.data.results));
 	}, []);
+
+	function handleSearch(e) {
+		e.preventDefault();
+		let search = searchRef.current?.value;
+		axios
+			.get(
+				`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${search}`
+			)
+			.then((res) => setListMovies(res.data.results));
+	}
+
 	console.log(listMovies);
 	return (
 		<Container>
-			<SearchHeaderMovies />
+			<SearchHeaderMovies inpReference={searchRef} onSubmit={handleSearch} />
 			<section className="row-list">
 				<h1>Minha Lista</h1>
 			</section>

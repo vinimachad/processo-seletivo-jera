@@ -1,19 +1,21 @@
 import React from "react";
+import { MdSearch } from "react-icons/md";
 
 import { Container } from "./styles";
 
-const SearchHeaderMovies = () => {
+const SearchHeaderMovies = ({ inpReference, onSubmit }) => {
 	return (
 		<Container>
 			<h1 className="title">Jera Movies</h1>
-			<form action="">
+			<form onSubmit={onSubmit}>
 				<input
 					className="input-search"
 					type="text"
 					placeholder="Busque por filmes..."
+					ref={inpReference}
 				/>
 				<button className="btn-search" type="submit">
-					Buscar
+					<MdSearch size={14} color={"white"} />
 				</button>
 			</form>
 			<a className="a-account" href="./account">

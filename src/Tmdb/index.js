@@ -32,3 +32,5 @@ export default {
 		items: filterAdult(),
 	},
 };
+
+export { API_KEY };
