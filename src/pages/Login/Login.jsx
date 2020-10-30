@@ -18,8 +18,8 @@ const Component = () => {
 		apiFirebase
 			.loginMailPass(email, pass)
 			.then((res) => {
-				history.push("/account");
 				setAuthenticated(true);
+				history.push("/account");
 			})
 			.catch((err) => {
 				alert(err);
