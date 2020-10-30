@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { Container } from "./styles";
 import axios from "axios";
-import { MdBookmark } from "react-icons/md";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
-import { API_KEY } from "../../Tmdb";
+import { apiTMDB, API_KEY } from "../../Tmdb";
 import history from "../../history";
 import { useParams } from "react-router-dom";
 const Movies = () => {
@@ -12,11 +11,19 @@ const Movies = () => {
 	const { id, type } = useParams();
 	const [listMovies, setListMovies] = useState([""]);
 	useEffect(() => {
-		axios
-			.get(
-				`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
-			)
-			.then((res) => setListMovies(res.data.results));
+		if (type === "adult") {
+			axios
+				.get(
+					`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
+				)
+				.then((res) => setListMovies(res.data.results));
+		} else {
+			apiTMDB
+				.get(
+					`discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&certification_country=BR&certification=L&certification.lte=L&include_adult=false&include_video=false&page=1`
+				)
+				.then((res) => setListMovies(res.data.results));
+		}
 	}, []);
 
 	function handleSearch(e) {
@@ -31,7 +38,6 @@ const Movies = () => {
 	function handleClickMovie(idM) {
 		history.push(`/account/${id}/movie/${type}/${idM}`);
 	}
-	console.log(listMovies);
 	return (
 		<Container>
 			<SearchHeaderMovies inpReference={searchRef} onSubmit={handleSearch} />

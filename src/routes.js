@@ -31,7 +31,7 @@ export default function Routes() {
 				component={Movies}
 			/>
 			<CustomRoute
-				isPrivate
+				// isPrivate
 				exact
 				path="/account/:id/movie/:type/:idMovie"
 				component={MovieDesc}

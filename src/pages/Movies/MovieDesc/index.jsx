@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { MdBookmark, MdPlayArrow } from "react-icons/md";
+import { MdBookmark, MdExitToApp, MdPlayArrow } from "react-icons/md";
 import { useParams } from "react-router-dom";
+import history from "../../../history";
 import { apiTMDB, API_KEY } from "../../../Tmdb";
+import apiFirebase from "../../../firebase/apiFirebase";
 
 import { Container } from "./styles";
 
 const MovieDesc = () => {
-	const { id, idMovie, type } = useParams();
+	const { idMovie, type, id } = useParams();
 	const [movie, setMovie] = useState("");
+
+	// const { authenticated } = IsAuthenticated();
 	useEffect(() => {
 		apiTMDB
 			.get(`movie/${idMovie}?api_key=${API_KEY}&language=pt-BR`)
 			.then((res) => setMovie(res.data));
 	}, []);
-	console.log(movie);
+
+	function handleSaveMyList() {
+		let save = apiFirebase.addInUser(id, type, idMovie, idMovie);
+		return save;
+	}
+	function handleMarkWatch() {}
+
 	return (
 		<Container>
 			<div className="overlay">
@@ -27,11 +37,14 @@ const MovieDesc = () => {
 					<p>{movie.overview}</p>
 				</div>
 				<div className="functions">
-					<button>
-						<MdBookmark />
+					<button onClick={handleSaveMyList}>
+						<MdBookmark size={30} />
 					</button>
-					<button>
-						<MdPlayArrow />
+					<button onClick={handleMarkWatch}>
+						<MdPlayArrow size={30} />
+					</button>
+					<button onClick={() => history.goBack(`account/${id}/movie/${type}`)}>
+						<MdExitToApp size={30} />
 					</button>
 				</div>
 			</div>

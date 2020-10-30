@@ -50,4 +50,23 @@ export default {
 			{ merge: true }
 		);
 	},
+	addInUser: async (id, typeAcc, idMark, idWatch) => {
+		await db
+			.collection("users")
+			.doc(id)
+			.set({
+				type:
+					typeAcc === "kid"
+						? {
+								typeAcc,
+								myListMovies: [idMark],
+								isWatch: [idWatch],
+						  }
+						: {
+								typeAcc,
+								myListMovies: [idMark],
+								isWatch: [idWatch],
+						  },
+			});
+	},
 };

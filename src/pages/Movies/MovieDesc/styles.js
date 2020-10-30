@@ -26,5 +26,19 @@ export const Container = styled.div`
 				width: 500px;
 			}
 		}
+		.functions {
+			button {
+				margin: 0 5px;
+				border: 0;
+				border-radius: 50%;
+				padding: 5px;
+				:hover {
+					svg {
+						color: #0db551;
+					}
+					cursor: pointer;
+				}
+			}
+		}
 	}
 `;
