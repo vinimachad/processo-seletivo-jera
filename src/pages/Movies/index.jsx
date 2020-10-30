@@ -6,9 +6,10 @@ import { MdBookmark } from "react-icons/md";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
 import { API_KEY } from "../../Tmdb";
 import history from "../../history";
+import { useParams } from "react-router-dom";
 const Movies = () => {
 	const searchRef = useRef("");
-
+	const { id, type } = useParams();
 	const [listMovies, setListMovies] = useState([""]);
 	useEffect(() => {
 		axios
@@ -27,8 +28,8 @@ const Movies = () => {
 			)
 			.then((res) => setListMovies(res.data.results));
 	}
-	function handleClickMovie(id) {
-		history.push(`/movies/${id}`);
+	function handleClickMovie(idM) {
+		history.push(`/account/${id}/movie/${type}/${idM}`);
 	}
 	console.log(listMovies);
 	return (

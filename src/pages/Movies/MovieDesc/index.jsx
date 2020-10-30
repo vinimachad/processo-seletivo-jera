@@ -6,11 +6,11 @@ import { apiTMDB, API_KEY } from "../../../Tmdb";
 import { Container } from "./styles";
 
 const MovieDesc = () => {
-	const { id } = useParams();
+	const { id, idMovie, type } = useParams();
 	const [movie, setMovie] = useState("");
 	useEffect(() => {
 		apiTMDB
-			.get(`movie/${id}?api_key=${API_KEY}&language=pt-BR`)
+			.get(`movie/${idMovie}?api_key=${API_KEY}&language=pt-BR`)
 			.then((res) => setMovie(res.data));
 	}, []);
 	console.log(movie);

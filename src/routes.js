@@ -23,9 +23,19 @@ export default function Routes() {
 		<Switch>
 			<Route exact path="/signup" component={SignUp} />
 			<Route exact path="/login" component={Login} />
-			<CustomRoute isPrivate exact path="/account" component={Account} />
-			<CustomRoute exact path="/movies" component={Movies} />
-			<CustomRoute exact path="/movies/:id" component={MovieDesc} />
+			<CustomRoute isPrivate exact path="/account/:id" component={Account} />
+			<CustomRoute
+				isPrivate
+				exact
+				path="/account/:id/movie/:type"
+				component={Movies}
+			/>
+			<CustomRoute
+				isPrivate
+				exact
+				path="/account/:id/movie/:type/:idMovie"
+				component={MovieDesc}
+			/>
 		</Switch>
 	);
 }

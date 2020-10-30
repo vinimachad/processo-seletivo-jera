@@ -4,6 +4,7 @@ import { IsAuthenticated } from "../../Context/dataContext";
 import apiFirebase from "../../firebase/apiFirebase";
 import history from "../../history";
 import { Container } from "./style";
+import firebase from "firebase/app";
 
 const Component = () => {
 	const { setAuthenticated } = IsAuthenticated();
@@ -19,7 +20,8 @@ const Component = () => {
 			.loginMailPass(email, pass)
 			.then((res) => {
 				setAuthenticated(true);
-				history.push("/account");
+				let user = firebase.auth().currentUser;
+				history.push(`/account/${user.uid}`);
 			})
 			.catch((err) => {
 				alert(err);

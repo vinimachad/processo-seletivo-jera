@@ -5,6 +5,8 @@ import { IsAuthenticated } from "../../Context/dataContext";
 import apiFirebase from "../../firebase/apiFirebase";
 import history from "../../history";
 
+import firebase from "firebase/app";
+
 import { Container } from "./style";
 
 export default function Login() {
@@ -23,7 +25,8 @@ export default function Login() {
 				avatar: result.user.photoURL,
 			});
 			setAuthenticated(true);
-			history.push("/account");
+			let user = firebase.auth().currentUser;
+			history.push(`/account/${user.uid}`);
 		} else {
 			alert("Oops..Seu login falhou");
 		}
@@ -41,8 +44,9 @@ export default function Login() {
 				email,
 			})
 			.then((res) => {
-				history.push("/account");
 				setAuthenticated(true);
+				let user = firebase.auth().currentUser;
+				history.push(`/account/${user.uid}`);
 			})
 			.catch((err) => {
 				alert(err);
