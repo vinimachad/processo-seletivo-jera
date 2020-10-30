@@ -24,7 +24,14 @@ const Movies = () => {
 				<h1>Filmes</h1>
 				<ul className="grid-movies">
 					{listMovies.map((mov, index) => (
-						<li>{mov.original_title}</li>
+						<li key={index}>
+							<img
+								className="poster-movie"
+								src={`https://image.tmdb.org/t/p/w200${mov.poster_path}`}
+								alt=""
+							/>
+							<strong>{mov.original_title}</strong>
+						</li>
 					))}
 				</ul>
 			</section>

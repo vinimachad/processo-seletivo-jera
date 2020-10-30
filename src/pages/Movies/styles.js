@@ -13,6 +13,12 @@ export const Container = styled.main`
 		.grid-movies {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+			grid-gap: 20px;
+			justify-content: center;
+			list-style: none;
+			strong {
+				color: #020202;
+			}
 		}
 	}
 `;
