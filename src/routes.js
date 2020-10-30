@@ -5,6 +5,7 @@ import SignUp from "./pages/SignUp/SignUp";
 import Account from "./pages/Account/Account";
 import Login from "./pages/Login/Login";
 import Movies from "./pages/Movies";
+import MovieDesc from "./pages/Movies/MovieDesc";
 import { IsAuthenticated } from "./Context/dataContext";
 
 export default function Routes() {
@@ -24,6 +25,7 @@ export default function Routes() {
 			<Route exact path="/login" component={Login} />
 			<CustomRoute isPrivate exact path="/account" component={Account} />
 			<CustomRoute exact path="/movies" component={Movies} />
+			<CustomRoute exact path="/movies/:id" component={MovieDesc} />
 		</Switch>
 	);
 }

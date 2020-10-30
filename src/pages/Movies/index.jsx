@@ -5,6 +5,7 @@ import axios from "axios";
 import { MdBookmark } from "react-icons/md";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
 import { API_KEY } from "../../Tmdb";
+import history from "../../history";
 const Movies = () => {
 	const searchRef = useRef("");
 
@@ -26,19 +27,23 @@ const Movies = () => {
 			)
 			.then((res) => setListMovies(res.data.results));
 	}
-
+	function handleClickMovie(id) {
+		history.push(`/movies/${id}`);
+	}
 	console.log(listMovies);
 	return (
 		<Container>
 			<SearchHeaderMovies inpReference={searchRef} onSubmit={handleSearch} />
-			<section className="row-list">
-				<h1>Minha Lista</h1>
-			</section>
+			{
+				<section className="row-list">
+					<h1>Minha Lista</h1>
+				</section>
+			}
 			<section className="row-list">
 				<h1>Filmes</h1>
 				<ul className="grid-movies">
 					{listMovies.map((mov, index) => (
-						<li key={index}>
+						<li onClick={() => handleClickMovie(mov.id)} key={index}>
 							<img
 								className="poster-movie"
 								src={`https://image.tmdb.org/t/p/w200${mov.poster_path}`}
