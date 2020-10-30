@@ -1,7 +1,5 @@
 import styled from "styled-components";
 
-import { ErrorMessage, Formik, Form, Field } from "formik";
-
 export const Container = styled.main`
 	width: 100%;
 	height: 100vh;

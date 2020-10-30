@@ -50,14 +50,4 @@ export default {
 			{ merge: true }
 		);
 	},
-	moviesTypes: async () => {
-		let movies = await db.collection("moviesTypes").add({
-			types: {
-				kids: {
-					filter: "",
-				},
-				adult: null,
-			},
-		});
-	},
 };
