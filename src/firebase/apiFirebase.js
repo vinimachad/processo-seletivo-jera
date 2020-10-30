@@ -13,9 +13,6 @@ export default {
 		firebase
 			.auth()
 			.createUserWithEmailAndPassword(email, password)
-			.then((res) => {
-				history.push("/account");
-			})
 			.catch((err) => {
 				alert(err);
 			});
@@ -28,18 +25,39 @@ export default {
 				alert(err);
 			});
 	},
+	signOut: async () => {
+		firebase
+			.auth()
+			.signOut()
+			.then(history.push("/login"))
+			.catch((err) => {
+				alert(err);
+			});
+	},
 	fbPopup: async () => {
 		const provider = new firebase.auth.FacebookAuthProvider();
 		let result = await firebaseApp.auth().signInWithPopup(provider);
 		return result;
 	},
 	addUser: async (u) => {
-		await db.collection("users").doc(u.id).set(
+		let user = firebase.auth().currentUser;
+		await db.collection("users").doc(user.uid).set(
 			{
 				name: u.name,
+				email: u.email,
 				avatar: u.avatar,
 			},
 			{ merge: true }
 		);
+	},
+	moviesTypes: async () => {
+		let movies = await db.collection("moviesTypes").add({
+			types: {
+				kids: {
+					filter: "",
+				},
+				adult: null,
+			},
+		});
 	},
 };

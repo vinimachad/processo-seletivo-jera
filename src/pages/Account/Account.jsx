@@ -1,22 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Container } from "./styles";
 import Button from "../../components/Button";
 
-import { useUserData } from "../../Context/dataContext";
+import apiFirebase from "../../firebase/apiFirebase";
+
+import history from "../../history";
+import { IsAuthenticated, MovieType } from "../../Context/dataContext";
 
 export default function Users() {
-	const { dataUser } = useUserData();
-	console.log(dataUser);
+	const { setTypeMovie } = MovieType();
+	const { setAuthenticated } = IsAuthenticated();
+
+	function handleLogOut() {
+		apiFirebase.signOut();
+		setAuthenticated(false);
+	}
+	function handleToMovies(type) {
+		history.push("./movies");
+		setTypeMovie(type);
+	}
+
 	return (
 		<Container>
 			<div className="choose-accounts">
 				<ul>
-					<button className="card-account">
-						<img className="image-face" src={dataUser.photoURL} alt="" />
-						<strong className="name">{dataUser.displayName}</strong>
+					<button onClick={() => handleToMovies("adult")} className="card-account">
+						<img
+							className="image-face"
+							src={
+								"https://ctupcursos.com.br/site/wp-content/uploads/2019/05/curso-de-informatica-para-adultos-01-1000x500.png"
+							}
+							alt=""
+						/>
+						<strong className="name">{"Adultos"}</strong>
 					</button>
-					<button className="card-account">
+					<button onClick={() => handleToMovies("kid")} className="card-account">
 						<img
 							className="image-face"
 							src="http://dreamkids.com.br/wp-content/uploads/2019/06/crian%C3%A7as-brincando2-1024x726.png"
@@ -26,7 +45,7 @@ export default function Users() {
 					</button>
 				</ul>
 			</div>
-			<Button content="Sair" type="button" click={() => {}} />
+			<Button content="Sair" type="button" click={handleLogOut} />
 		</Container>
 	);
 }

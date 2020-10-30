@@ -1,9 +1,13 @@
 import React, { useRef } from "react";
 import Button from "../../components/Button";
+import { IsAuthenticated } from "../../Context/dataContext";
 import apiFirebase from "../../firebase/apiFirebase";
+import history from "../../history";
 import { Container } from "./style";
 
 const Component = () => {
+	const { setAuthenticated } = IsAuthenticated();
+
 	const emailRef = useRef("");
 	const passRef = useRef("");
 
@@ -12,6 +16,8 @@ const Component = () => {
 		let email = emailRef.current?.value;
 		let pass = passRef.current?.value;
 		apiFirebase.loginMailPass(email, pass);
+		history.push("/account");
+		setAuthenticated(true);
 	}
 
 	return (
@@ -22,6 +28,9 @@ const Component = () => {
 				<input type="email" placeholder="Email" name="email" ref={emailRef} />
 				<input type="password" placeholder="Senha" name="password" ref={passRef} />
 				<Button content="Entrar" />
+				<a className="link" href="/signup">
+					Quero me cadastrar!
+				</a>
 			</form>
 		</Container>
 	);

@@ -31,4 +31,10 @@ export const Container = styled.main`
 			border-radius: 4px;
 		}
 	}
+	.link {
+		font-size: 16px;
+		text-decoration: none;
+		color: #0db551;
+		font-weight: bold;
+	}
 `;

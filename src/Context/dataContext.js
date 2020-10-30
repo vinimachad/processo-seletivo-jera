@@ -3,12 +3,15 @@ import React, { createContext, useState, useContext } from "react";
 const Context = createContext();
 
 export default function ProviderContexts({ children }) {
-	const [dataUser, setDataUser] = useState({});
+	const [typeMovie, setTypeMovie] = useState("adult");
+	const [authenticated, setAuthenticated] = useState(false);
 	return (
 		<Context.Provider
 			value={{
-				dataUser,
-				setDataUser,
+				typeMovie,
+				setTypeMovie,
+				authenticated,
+				setAuthenticated,
 			}}
 		>
 			{children}
@@ -16,8 +19,13 @@ export default function ProviderContexts({ children }) {
 	);
 }
 
-export function useUserData() {
+export function MovieType() {
 	const context = useContext(Context);
-	const { dataUser, setDataUser } = context;
-	return { dataUser, setDataUser };
+	const { typeMovie, setTypeMovie } = context;
+	return { typeMovie, setTypeMovie };
+}
+export function IsAuthenticated() {
+	const context = useContext(Context);
+	const { authenticated, setAuthenticated } = context;
+	return { authenticated, setAuthenticated };
 }

@@ -1,37 +1,46 @@
 import React, { useRef } from "react";
 
 import Button from "../../components/Button";
+import { IsAuthenticated } from "../../Context/dataContext";
 import apiFirebase from "../../firebase/apiFirebase";
 import history from "../../history";
-import { useUserData } from "../../Context/dataContext";
 
 import { Container } from "./style";
 
 export default function Login() {
+	const { setAuthenticated } = IsAuthenticated();
+
 	const emailRef = useRef("");
 	const passRef = useRef("");
 	const userNameRef = useRef("");
 
-	const { setDataUser } = useUserData();
 	async function handleLoginFace() {
 		let result = await apiFirebase.fbPopup();
 		if (result) {
-			await setDataUser(result.user);
 			await apiFirebase.addUser({
-				id: result.user.uid,
 				name: result.user.displayName,
+				email: result.user.email,
 				avatar: result.user.photoURL,
 			});
 			await history.push("/account");
+			setAuthenticated(true);
 		} else {
 			alert("Oops..Seu login falhou");
 		}
 	}
-	function handleSignUp(e) {
+	async function handleSignUp(e) {
 		e.preventDefault();
+		let user = userNameRef.current?.value;
 		let email = emailRef.current?.value;
 		let pass = passRef.current?.value;
-		apiFirebase.createMailPass(email, pass);
+		await apiFirebase.createMailPass(email, pass);
+		apiFirebase.addUser({
+			name: user,
+			avatar: null,
+			email,
+		});
+		await history.push("/account");
+		setAuthenticated(true);
 	}
 	return (
 		<Container>
@@ -52,6 +61,9 @@ export default function Login() {
 				content="Entrar com o facebook"
 				click={handleLoginFace}
 			/>
+			<a className="link" href="/login">
+				Já tenho cadastro
+			</a>
 		</Container>
 	);
 }
