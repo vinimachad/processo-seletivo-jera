@@ -18,7 +18,14 @@ const MovieDesc = () => {
 	}, []);
 
 	function handleSaveMyList() {
-		let save = apiFirebase.updateUser(id, type, idMovie, movie.poster_path);
+		let save = apiFirebase.updateUser(
+			id,
+			type,
+			idMovie,
+			movie.poster_path,
+			movie.original_title
+		);
+		alert(movie.original_title + " foi adicionado na sua lista");
 		return save;
 	}
 	function handleMarkWatch() {}

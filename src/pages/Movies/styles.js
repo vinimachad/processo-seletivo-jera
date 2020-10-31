@@ -9,12 +9,12 @@ export const Container = styled.main`
 	align-items: center;
 	.row-list {
 		width: 90%;
-		height: min(270px);
+		height: min(270px, max(fit-content));
 		.grid-movies {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
 			grid-gap: 20px;
-			justify-content: center;
+			justify-content: flex-start;
 			list-style: none;
 			strong {
 				color: #020202;

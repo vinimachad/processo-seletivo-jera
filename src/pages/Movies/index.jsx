@@ -62,7 +62,7 @@ const Movies = () => {
 									src={`https://image.tmdb.org/t/p/w200${mov.poster}`}
 									alt=""
 								/>
-								{/* <strong>{mov.original_title}</strong> */}
+								<strong>{mov.title}</strong>
 							</li>
 						))}
 					</ul>

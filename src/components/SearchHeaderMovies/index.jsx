@@ -1,14 +1,16 @@
 import React from "react";
 import { MdSearch } from "react-icons/md";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import { Container } from "./styles";
 
 const SearchHeaderMovies = ({ inpReference, onSubmit }) => {
-	const { id } = useParams();
+	const { id, type } = useParams();
 	return (
 		<Container>
-			<h1 className="title">Jera Movies</h1>
+			<Link to={`/account/${id}/movie/${type}`} className="title">
+				Jera Movies
+			</Link>
 			<form onSubmit={onSubmit}>
 				<input
 					className="input-search"
@@ -20,9 +22,9 @@ const SearchHeaderMovies = ({ inpReference, onSubmit }) => {
 					<MdSearch size={14} color={"white"} />
 				</button>
 			</form>
-			<a className="a-account" href={`/account/${id}`}>
+			<Link className="a-account" to={`/account/${id}`}>
 				Contas
-			</a>
+			</Link>
 		</Container>
 	);
 };

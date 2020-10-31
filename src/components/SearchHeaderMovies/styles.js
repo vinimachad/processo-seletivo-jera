@@ -15,6 +15,8 @@ export const Container = styled.header`
 	.title {
 		font-size: 30px;
 		color: #0db551;
+		text-decoration: none;
+		font-weight: bold;
 	}
 	.a-account {
 		padding: 10px 10px;
