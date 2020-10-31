@@ -6,8 +6,8 @@ import history from "../history";
 import firebaseConfig from "./firebaseConfig";
 
 const firebaseApp = firebase.initializeApp(firebaseConfig);
-const db = firebaseApp.firestore();
-modmodeexport default {
+export const db = firebaseApp.firestore();
+export default {
 	loginMailPass: async (email, password) => {
 		firebase
 			.auth()
@@ -56,7 +56,7 @@ modmodeexport default {
 				{ merge: true }
 			);
 	},
-	updateUser: async (id, typeAcc, idMark, idWatch) => {
+	updateUser: async (id, typeAcc, idMark, poster) => {
 		let userRef = await db.collection("users").doc(id);
 		let getData = await userRef.get();
 		let data = await getData.data();
@@ -67,7 +67,7 @@ modmodeexport default {
 				.doc(id)
 				.update({
 					kid: {
-						listMark: [...kid.listMark, idMark],
+						listMark: [...kid.listMark, { poster, idMark }],
 						listWatch: [],
 					},
 				});
@@ -78,7 +78,7 @@ modmodeexport default {
 				.doc(id)
 				.update({
 					adult: {
-						listMark: [...adult.listMark, idMark],
+						listMark: [...adult.listMark, { poster, idMark }],
 						listWatch: [],
 					},
 				});

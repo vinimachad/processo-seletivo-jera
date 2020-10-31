@@ -11,7 +11,6 @@ const MovieDesc = () => {
 	const { idMovie, type, id } = useParams();
 	const [movie, setMovie] = useState("");
 
-	// const { authenticated } = IsAuthenticated();
 	useEffect(() => {
 		apiTMDB
 			.get(`movie/${idMovie}?api_key=${API_KEY}&language=pt-BR`)
@@ -19,7 +18,7 @@ const MovieDesc = () => {
 	}, []);
 
 	function handleSaveMyList() {
-		let save = apiFirebase.updateUser(id, type, idMovie, idMovie);
+		let save = apiFirebase.updateUser(id, type, idMovie, movie.poster_path);
 		return save;
 	}
 	function handleMarkWatch() {}
