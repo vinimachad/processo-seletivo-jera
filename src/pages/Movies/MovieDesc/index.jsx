@@ -22,28 +22,15 @@ const MovieDesc = () => {
 	}, []);
 
 	function handleSaveMyList() {
-		if (indexAcc !== null) {
-			let save = apiFirebase.updateUser(
-				id,
-				type,
-				idMovie,
-				movie.poster_path,
-				movie.original_title
-			);
-			alert(movie.original_title + " foi adicionado na sua lista");
-			return save;
-		} else {
-			async function updateUser() {
-				let userRef = await db.collection("users").doc(id);
-				let getData = await userRef.get();
-				let data = await getData.data().accounts;
-				let list = await getData.data().accounts[indexAcc].listMark;
-				userRef.update({
-					[list]: [...list, idMovie],
-				});
-			}
-			updateUser();
-		}
+		let save = apiFirebase.updateUser(
+			id,
+			type,
+			idMovie,
+			movie.poster_path,
+			movie.original_title
+		);
+		alert(movie.original_title + " foi adicionado na sua lista");
+		return save;
 	}
 	function handleMarkWatch() {}
 

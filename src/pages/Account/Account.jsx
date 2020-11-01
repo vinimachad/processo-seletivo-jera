@@ -25,7 +25,6 @@ export default function Users() {
 	const seleRef = useRef(null);
 
 	useEffect(() => {
-		setIndexAcc(null);
 		db
 			.collection("users")
 			.doc(id)
@@ -68,7 +67,6 @@ export default function Users() {
 		}
 	}
 
-	console.log(accounts);
 	return (
 		<Container>
 			{openModal ? (

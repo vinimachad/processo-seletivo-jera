@@ -24,6 +24,7 @@ export default function Login() {
 				name: result.user.displayName,
 				email: result.user.email,
 				avatar: result.user.photoURL,
+				dateNas: null,
 			});
 			setAuthenticated(true);
 			let user = firebase.auth().currentUser;

@@ -22,21 +22,10 @@ const Movies = () => {
 					`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
 				)
 				.then((res) => setListMovies(res.data.results));
-			if (indexAcc !== null) {
-				let listRef = db.collection("users").doc(id);
-				let getList = listRef
-					.get()
-					.then((res) => setMyList(res.data().adult.listMark));
-			} else {
-				db
-					.collection("users")
-					.doc(id)
-					.get()
-					.then((res) => {
-						let val = res.data().accounts[indexAcc].listMark;
-						setListMovies(val);
-					});
-			}
+			let listRef = db.collection("users").doc(id);
+			let getList = listRef
+				.get()
+				.then((res) => setMyList(res.data().adult.listMark));
 		}
 		if (type === "kid") {
 			apiTMDB
@@ -44,21 +33,10 @@ const Movies = () => {
 					`discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&certification_country=BR&certification=L&certification.lte=L&include_adult=false&include_video=false&page=1`
 				)
 				.then((res) => setListMovies(res.data.results));
-			if (indexAcc !== null) {
-				let listRef = db.collection("users").doc(id);
-				let getList = listRef
-					.get()
-					.then((res) => setMyList(res.data().kid.listMark));
-			} else {
-				db
-					.collection("users")
-					.doc(id)
-					.get()
-					.then((res) => {
-						let val = res.data().accounts[indexAcc].listMark;
-						setListMovies(val);
-					});
-			}
+			let listRef = db.collection("users").doc(id);
+			let getList = listRef
+				.get()
+				.then((res) => setMyList(res.data().kid.listMark));
 		}
 	}, []);
 	function handleSearch(e) {

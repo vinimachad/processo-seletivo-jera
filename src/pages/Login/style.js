@@ -27,11 +27,11 @@ export const Container = styled.section`
 			padding: 0 15px;
 			border-radius: 4px;
 		}
-		.link {
-			font-size: 16px;
-			text-decoration: none;
-			color: #0db551;
-			font-weight: bold;
-		}
+	}
+	.link {
+		font-size: 16px;
+		text-decoration: none;
+		color: #0db551;
+		font-weight: bold;
 	}
 `;
