@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login";
 import Movies from "./pages/Movies";
 import MovieDesc from "./pages/Movies/MovieDesc";
 import { IsAuthenticated } from "./Context/dataContext";
+import Home from "./pages/Home";
 
 export default function Routes() {
 	const { authenticated } = IsAuthenticated();
@@ -21,6 +22,7 @@ export default function Routes() {
 
 	return (
 		<Switch>
+			<Route exact path="/" component={Home} />
 			<Route exact path="/signup" component={SignUp} />
 			<Route exact path="/login" component={Login} />
 			<CustomRoute isPrivate exact path="/account/:id" component={Account} />
