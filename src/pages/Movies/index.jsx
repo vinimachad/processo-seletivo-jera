@@ -5,13 +5,16 @@ import axios from "axios";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
 import { apiTMDB, API_KEY } from "../../Tmdb";
 import history from "../../history";
+import { IndexAcc } from "../../Context/dataContext";
 import { useParams } from "react-router-dom";
 import { db } from "../../firebase/apiFirebase";
 const Movies = () => {
 	const searchRef = useRef("");
 	const { id, type } = useParams();
+	const { indexAcc } = IndexAcc();
 	const [listMovies, setListMovies] = useState([""]);
 	const [myList, setMyList] = useState([""]);
+
 	useEffect(() => {
 		if (type === "adult") {
 			axios
@@ -19,20 +22,43 @@ const Movies = () => {
 					`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
 				)
 				.then((res) => setListMovies(res.data.results));
-			let listRef = db.collection("users").doc(id);
-			let getList = listRef
-				.get()
-				.then((res) => setMyList(res.data().adult.listMark));
-		} else {
+			if (indexAcc !== null) {
+				let listRef = db.collection("users").doc(id);
+				let getList = listRef
+					.get()
+					.then((res) => setMyList(res.data().adult.listMark));
+			} else {
+				db
+					.collection("users")
+					.doc(id)
+					.get()
+					.then((res) => {
+						let val = res.data().accounts[indexAcc].listMark;
+						setListMovies(val);
+					});
+			}
+		}
+		if (type === "kid") {
 			apiTMDB
 				.get(
 					`discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&certification_country=BR&certification=L&certification.lte=L&include_adult=false&include_video=false&page=1`
 				)
 				.then((res) => setListMovies(res.data.results));
-			let listRef = db.collection("users").doc(id);
-			let getList = listRef
-				.get()
-				.then((res) => setMyList(res.data().kid.listMark));
+			if (indexAcc !== null) {
+				let listRef = db.collection("users").doc(id);
+				let getList = listRef
+					.get()
+					.then((res) => setMyList(res.data().kid.listMark));
+			} else {
+				db
+					.collection("users")
+					.doc(id)
+					.get()
+					.then((res) => {
+						let val = res.data().accounts[indexAcc].listMark;
+						setListMovies(val);
+					});
+			}
 		}
 	}, []);
 	function handleSearch(e) {
@@ -47,7 +73,6 @@ const Movies = () => {
 	function handleClickMovie(idM) {
 		history.push(`/account/${id}/movie/${type}/${idM}`);
 	}
-	console.log(myList);
 	return (
 		<Container>
 			<SearchHeaderMovies inpReference={searchRef} onSubmit={handleSearch} />

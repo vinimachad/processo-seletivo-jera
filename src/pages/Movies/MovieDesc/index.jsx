@@ -3,11 +3,15 @@ import { MdBookmark, MdExitToApp, MdPlayArrow } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import history from "../../../history";
 import { apiTMDB, API_KEY } from "../../../Tmdb";
-import apiFirebase from "../../../firebase/apiFirebase";
+import apiFirebase, { db } from "../../../firebase/apiFirebase";
+
+import firebase from "firebase/app";
 
 import { Container } from "./styles";
+import { IndexAcc } from "../../../Context/dataContext";
 
 const MovieDesc = () => {
+	const { indexAcc } = IndexAcc();
 	const { idMovie, type, id } = useParams();
 	const [movie, setMovie] = useState("");
 
@@ -18,15 +22,28 @@ const MovieDesc = () => {
 	}, []);
 
 	function handleSaveMyList() {
-		let save = apiFirebase.updateUser(
-			id,
-			type,
-			idMovie,
-			movie.poster_path,
-			movie.original_title
-		);
-		alert(movie.original_title + " foi adicionado na sua lista");
-		return save;
+		if (indexAcc !== null) {
+			let save = apiFirebase.updateUser(
+				id,
+				type,
+				idMovie,
+				movie.poster_path,
+				movie.original_title
+			);
+			alert(movie.original_title + " foi adicionado na sua lista");
+			return save;
+		} else {
+			async function updateUser() {
+				let userRef = await db.collection("users").doc(id);
+				let getData = await userRef.get();
+				let data = await getData.data().accounts;
+				let list = await getData.data().accounts[indexAcc].listMark;
+				userRef.update({
+					[list]: [...list, idMovie],
+				});
+			}
+			updateUser();
+		}
 	}
 	function handleMarkWatch() {}
 

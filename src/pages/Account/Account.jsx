@@ -6,7 +6,7 @@ import Button from "../../components/Button";
 import apiFirebase, { db } from "../../firebase/apiFirebase";
 
 import history from "../../history";
-import { IsAuthenticated, MovieType } from "../../Context/dataContext";
+import { IsAuthenticated, IndexAcc } from "../../Context/dataContext";
 import { useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
 import adultImage from "../../assets/adult.png";
@@ -14,7 +14,7 @@ import kidImage from "../../assets/kids.png";
 import otherImage from "../../assets/icon.png";
 
 export default function Users() {
-	const { setTypeMovie } = MovieType();
+	const { setIndexAcc } = IndexAcc();
 	const { setAuthenticated } = IsAuthenticated();
 	const { id } = useParams();
 
@@ -25,7 +25,8 @@ export default function Users() {
 	const seleRef = useRef(null);
 
 	useEffect(() => {
-		let docRef = db
+		setIndexAcc(null);
+		db
 			.collection("users")
 			.doc(id)
 			.get()
@@ -38,9 +39,9 @@ export default function Users() {
 		apiFirebase.signOut();
 		setAuthenticated(false);
 	}
-	function handleToMovies(type) {
+	function handleToMovies(type, indexAcc) {
 		history.push(`/account/${id}/movie/${type}`);
-		setTypeMovie(type);
+		setIndexAcc(indexAcc);
 	}
 	async function handleCreateProfile() {
 		let name = await nameRef.current?.value;
@@ -48,20 +49,23 @@ export default function Users() {
 
 		let docRef = await db.collection("users").doc(id);
 		let getUser = await docRef.get();
-		let user = await getUser.data();
 		let account = await getUser.data().accounts;
-
-		await docRef.update({
-			accounts: [
-				...account,
-				{
-					name,
-					type,
-					listMark: [],
-				},
-			],
-		});
-		setOpenModal(false);
+		if (account.length < 2) {
+			await docRef.update({
+				accounts: [
+					...account,
+					{
+						name,
+						type,
+						listMark: [],
+					},
+				],
+			});
+			setOpenModal(false);
+		} else {
+			alert("Oopss..,Você só pode ter 4 perfis por conta :/");
+			setOpenModal(false);
+		}
 	}
 
 	console.log(accounts);
