@@ -59,19 +59,20 @@ export default {
 				{ merge: true }
 			);
 	},
-	updateUser: async (id, typeAcc, idMark, poster, title) => {
+	updateList: async (id, typeAcc, idMark, poster, title, typeList) => {
 		let userRef = await db.collection("users").doc(id);
 		let getData = await userRef.get();
 		let data = await getData.data();
 		let { kid, adult } = data;
+		console.log(kid);
 		if (typeAcc === "kid") {
 			await db
 				.collection("users")
 				.doc(id)
 				.update({
 					kid: {
-						listMark: [...kid.listMark, { poster, idMark, title }],
-						listWatch: [],
+						...kid,
+						[typeList]: [...kid[typeList], { poster, idMark, title }],
 					},
 				});
 		}
@@ -81,8 +82,8 @@ export default {
 				.doc(id)
 				.update({
 					adult: {
-						listMark: [...adult.listMark, { poster, idMark, title }],
-						listWatch: [],
+						...adult,
+						[typeList]: [...adult[typeList], { poster, idMark, title }],
 					},
 				});
 		}

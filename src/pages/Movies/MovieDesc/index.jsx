@@ -5,13 +5,10 @@ import history from "../../../history";
 import { apiTMDB, API_KEY } from "../../../Tmdb";
 import apiFirebase, { db } from "../../../firebase/apiFirebase";
 
-import firebase from "firebase/app";
-
 import { Container } from "./styles";
 import { IndexAcc } from "../../../Context/dataContext";
 
 const MovieDesc = () => {
-	const { indexAcc } = IndexAcc();
 	const { idMovie, type, id } = useParams();
 	const [movie, setMovie] = useState("");
 
@@ -22,17 +19,29 @@ const MovieDesc = () => {
 	}, []);
 
 	function handleSaveMyList() {
-		let save = apiFirebase.updateUser(
+		let save = apiFirebase.updateList(
 			id,
 			type,
 			idMovie,
 			movie.poster_path,
-			movie.original_title
+			movie.original_title,
+			"listMark"
 		);
 		alert(movie.original_title + " foi adicionado na sua lista");
 		return save;
 	}
-	function handleMarkWatch() {}
+	function handleMarkWatch() {
+		let save = apiFirebase.updateList(
+			id,
+			type,
+			idMovie,
+			movie.poster_path,
+			movie.original_title,
+			"listWatch"
+		);
+		alert(movie.original_title + " foi adicionado nos filmes assistidos");
+		return save;
+	}
 
 	return (
 		<Container>

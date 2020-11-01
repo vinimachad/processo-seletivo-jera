@@ -14,7 +14,7 @@ export default function Routes() {
 
 	function CustomRoute({ isPrivate, ...rest }) {
 		if (isPrivate && !authenticated) {
-			return <Redirect to="/signup" />;
+			return <Redirect to="/" />;
 		}
 
 		return <Route {...rest} />;
