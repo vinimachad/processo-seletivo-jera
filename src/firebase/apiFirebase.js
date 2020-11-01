@@ -44,6 +44,7 @@ export default {
 					name: u.name,
 					email: u.email,
 					avatar: u.avatar,
+					dataNas: u.dateNas,
 					adult: {
 						listMark: [],
 						listWatch: [],

@@ -15,6 +15,7 @@ export default function Login() {
 	const emailRef = useRef("");
 	const passRef = useRef("");
 	const userNameRef = useRef("");
+	const dateRef = useRef("");
 
 	async function handleLoginFace() {
 		let result = await apiFirebase.fbPopup();
@@ -36,13 +37,16 @@ export default function Login() {
 		let userN = userNameRef.current?.value;
 		let email = emailRef.current?.value;
 		let pass = passRef.current?.value;
+		let dateNas = dateRef.current?.value;
+
 		let createUser = await firebase
 			.auth()
 			.createUserWithEmailAndPassword(email, pass)
 			.then((res) => {
 				apiFirebase.addUser({
 					name: userN,
-					email: email,
+					email,
+					dateNas,
 					avatar: null,
 				});
 				let user = firebase.auth().currentUser;
@@ -62,6 +66,12 @@ export default function Login() {
 					placeholder="Nome de usuario"
 					name="user"
 					ref={userNameRef}
+				/>
+				<input
+					type="date"
+					placeholder="Data de nascimento"
+					name="user"
+					ref={dateRef}
 				/>
 				<input type="email" placeholder="Email" name="email" ref={emailRef} />
 				<input type="password" placeholder="Senha" name="password" ref={passRef} />

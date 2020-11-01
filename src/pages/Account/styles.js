@@ -8,7 +8,7 @@ export const Container = styled.section`
 	justify-content: center;
 	align-items: center;
 	.choose-accounts {
-		width: 600px;
+		width: max(1366px, min(600px));
 		height: 300px;
 		margin: 0 0 0 10px 0;
 		ul {

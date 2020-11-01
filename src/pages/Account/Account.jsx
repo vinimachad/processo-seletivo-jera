@@ -32,7 +32,7 @@ export default function Users() {
 			.then((res) => {
 				setAccounts(res.data().accounts);
 			});
-	}, []);
+	}, [accounts]);
 
 	function handleLogOut() {
 		apiFirebase.signOut();
@@ -50,19 +50,21 @@ export default function Users() {
 		let getUser = await docRef.get();
 		let user = await getUser.data();
 		let account = await getUser.data().accounts;
-		await docRef.set({
-			...user,
-			accounts: {
+
+		await docRef.update({
+			accounts: [
 				...account,
-				[name]: {
+				{
 					name,
 					type,
 					listMark: [],
 				},
-			},
+			],
 		});
-		console.log(user);
+		setOpenModal(false);
 	}
+
+	console.log(accounts);
 	return (
 		<Container>
 			{openModal ? (
@@ -82,7 +84,10 @@ export default function Users() {
 					</button>
 					{accounts !== undefined
 						? accounts.map((a, index) => (
-								<button onClick={() => handleToMovies(a.type)} className="card-account">
+								<button
+									onClick={() => handleToMovies(a.type, index)}
+									className="card-account"
+								>
 									<img className="image-face" src={otherImage} alt="" />
 									<strong className="name">{a.name}</strong>
 								</button>

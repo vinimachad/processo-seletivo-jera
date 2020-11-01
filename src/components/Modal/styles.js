@@ -12,4 +12,21 @@ export const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	img {
+		width: 200px;
+		height: auto;
+		margin: 10px 0;
+		border-radius: 4px;
+	}
+	input,
+	select {
+		height: 48px;
+		width: 90%;
+		border: 0;
+		border-radius: 4px;
+		background: #ffff;
+		padding: 0 15px;
+		font-size: 18px;
+		margin: 0 0 10px;
+	}
 `;
