@@ -10,6 +10,11 @@ export const Container = styled.main`
 	.row-list {
 		width: 90%;
 		height: min(270px, max(fit-content));
+		h1 {
+			margin: 60px 0 20px 0;
+			font-size: 39px;
+			color: #0db551;
+		}
 		.grid-movies {
 			display: grid;
 			grid-template-columns: repeat(auto-fit, minmax(200px, 200px));

@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container } from "./styles";
 import axios from "axios";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
-import { apiTMDB, API_KEY } from "../../Tmdb";
+import { API_KEY } from "../../Tmdb";
 import history from "../../history";
 import { IndexAcc } from "../../Context/dataContext";
 import { useParams } from "react-router-dom";
@@ -14,30 +14,18 @@ const Movies = () => {
 	const { indexAcc } = IndexAcc();
 	const [listMovies, setListMovies] = useState([""]);
 	const [myList, setMyList] = useState([""]);
+	const [myWatch, setMyWatch] = useState([""]);
 
 	useEffect(() => {
-		if (type === "adult") {
-			axios
-				.get(
-					`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
-				)
-				.then((res) => setListMovies(res.data.results));
-			let listRef = db.collection("users").doc(id);
-			let getList = listRef
-				.get()
-				.then((res) => setMyList(res.data().adult.listMark));
-		}
-		if (type === "kid") {
-			apiTMDB
-				.get(
-					`discover/movie?api_key=${API_KEY}&language=pt-BR&sort_by=popularity.desc&certification_country=BR&certification=L&certification.lte=L&include_adult=false&include_video=false&page=1`
-				)
-				.then((res) => setListMovies(res.data.results));
-			let listRef = db.collection("users").doc(id);
-			let getList = listRef
-				.get()
-				.then((res) => setMyList(res.data().kid.listMark));
-		}
+		axios
+			.get(
+				`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
+			)
+			.then((res) => setListMovies(res.data.results));
+		let listRef = db.collection("users").doc(id);
+		listRef.get().then((res) => setMyList(res.data()[type].listMark));
+
+		listRef.get().then((res) => setMyWatch(res.data()[type].listWatch));
 	}, []);
 	function handleSearch(e) {
 		e.preventDefault();
@@ -59,6 +47,25 @@ const Movies = () => {
 					<h1>Minha Lista</h1>
 					<ul className="grid-movies">
 						{myList.map((mov, index) => (
+							<li onClick={() => handleClickMovie(mov.idMark)} key={index}>
+								<img
+									className="poster-movie"
+									src={`https://image.tmdb.org/t/p/w200${mov.poster}`}
+									alt=""
+								/>
+								<strong>{mov.title}</strong>
+							</li>
+						))}
+					</ul>
+				</section>
+			) : (
+				""
+			)}
+			{myWatch !== "" ? (
+				<section className="row-list">
+					<h1>Volte a assistir</h1>
+					<ul className="grid-movies">
+						{myWatch.map((mov, index) => (
 							<li onClick={() => handleClickMovie(mov.idMark)} key={index}>
 								<img
 									className="poster-movie"
