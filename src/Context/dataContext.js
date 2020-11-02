@@ -6,6 +6,7 @@ export default function ProviderContexts({ children }) {
 	const [typeMovie, setTypeMovie] = useState("adult");
 	const [authenticated, setAuthenticated] = useState(false);
 	const [indexAcc, setIndexAcc] = useState(null);
+	const [inCreateAcc, setInCreateAcc] = useState(false);
 	return (
 		<Context.Provider
 			value={{
@@ -15,6 +16,8 @@ export default function ProviderContexts({ children }) {
 				setAuthenticated,
 				indexAcc,
 				setIndexAcc,
+				inCreateAcc,
+				setInCreateAcc,
 			}}
 		>
 			{children}
@@ -36,4 +39,9 @@ export function IndexAcc() {
 	const context = useContext(Context);
 	const { indexAcc, setIndexAcc } = context;
 	return { indexAcc, setIndexAcc };
+}
+export function InCreateAcc() {
+	const context = useContext(Context);
+	const { inCreateAcc, setInCreateAcc } = context;
+	return { inCreateAcc, setInCreateAcc };
 }

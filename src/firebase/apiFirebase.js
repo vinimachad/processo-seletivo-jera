@@ -59,33 +59,69 @@ export default {
 				{ merge: true }
 			);
 	},
-	updateList: async (id, typeAcc, idMark, poster, title, typeList) => {
+	updateList: async (
+		id,
+		typeAcc,
+		idMark,
+		poster,
+		title,
+		typeList,
+		indexAcc,
+		inCreateAcc
+	) => {
 		let userRef = await db.collection("users").doc(id);
 		let getData = await userRef.get();
 		let data = await getData.data();
-		let { kid, adult } = data;
-		console.log(kid);
+		let { kid, adult, accounts: acc } = data;
+		let account = acc[indexAcc];
+		console.log(acc);
 		if (typeAcc === "kid") {
-			await db
-				.collection("users")
-				.doc(id)
-				.update({
-					kid: {
-						...kid,
-						[typeList]: [...kid[typeList], { poster, idMark, title }],
-					},
-				});
+			if (inCreateAcc === false) {
+				await db
+					.collection("users")
+					.doc(id)
+					.update({
+						kid: {
+							...kid,
+							[typeList]: [...kid[typeList], { poster, idMark, title }],
+						},
+					});
+			} else {
+				await db
+					.collection("users")
+					.doc(id)
+					.update({
+						// [`accounts[${indexAcc}]`]: {
+						// 	[typeList]: [...account[typeList], { poster, idMark, title }],
+						// },
+						accounts: [...acc],
+					});
+			}
 		}
 		if (typeAcc === "adult") {
-			await db
-				.collection("users")
-				.doc(id)
-				.update({
-					adult: {
-						...adult,
-						[typeList]: [...adult[typeList], { poster, idMark, title }],
-					},
-				});
+			if (inCreateAcc === false) {
+				await db
+					.collection("users")
+					.doc(id)
+					.update({
+						adult: {
+							...adult,
+							[typeList]: [...adult[typeList], { poster, idMark, title }],
+						},
+					});
+			} else {
+				await db
+					.collection("users")
+					.doc(id)
+					.update({
+						accounts: [
+							{
+								...acc,
+								[typeList]: [...account[typeList], { poster, idMark, title }],
+							},
+						],
+					});
+			}
 		}
 	},
 };

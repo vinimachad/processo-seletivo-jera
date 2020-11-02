@@ -6,7 +6,11 @@ import Button from "../../components/Button";
 import apiFirebase, { db } from "../../firebase/apiFirebase";
 
 import history from "../../history";
-import { IsAuthenticated, IndexAcc } from "../../Context/dataContext";
+import {
+	IsAuthenticated,
+	IndexAcc,
+	InCreateAcc,
+} from "../../Context/dataContext";
 import { useParams } from "react-router-dom";
 import Modal from "../../components/Modal";
 import adultImage from "../../assets/adult.png";
@@ -16,6 +20,7 @@ import otherImage from "../../assets/icon.png";
 export default function Users() {
 	const { setIndexAcc } = IndexAcc();
 	const { setAuthenticated } = IsAuthenticated();
+	const { setInCreateAcc } = InCreateAcc();
 	const { id } = useParams();
 
 	const [openModal, setOpenModal] = useState(false);
@@ -57,10 +62,12 @@ export default function Users() {
 						name,
 						type,
 						listMark: [],
+						listWatch: [],
 					},
 				],
 			});
 			setOpenModal(false);
+			setInCreateAcc(true);
 		} else {
 			alert("Oopss..,Você só pode ter 4 perfis por conta :/");
 			setOpenModal(false);

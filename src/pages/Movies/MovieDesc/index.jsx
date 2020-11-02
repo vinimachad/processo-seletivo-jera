@@ -3,14 +3,17 @@ import { MdBookmark, MdExitToApp, MdPlayArrow } from "react-icons/md";
 import { useParams } from "react-router-dom";
 import history from "../../../history";
 import { apiTMDB, API_KEY } from "../../../Tmdb";
-import apiFirebase, { db } from "../../../firebase/apiFirebase";
+import apiFirebase from "../../../firebase/apiFirebase";
 
 import { Container } from "./styles";
-import { IndexAcc } from "../../../Context/dataContext";
+import { IndexAcc, InCreateAcc } from "../../../Context/dataContext";
 
 const MovieDesc = () => {
 	const { idMovie, type, id } = useParams();
 	const [movie, setMovie] = useState("");
+
+	const { indexAcc } = IndexAcc();
+	const { inCreateAcc } = InCreateAcc();
 
 	useEffect(() => {
 		apiTMDB
@@ -18,30 +21,34 @@ const MovieDesc = () => {
 			.then((res) => setMovie(res.data));
 	}, []);
 
-	function handleSaveMyList() {
+	function handleSave(typeList) {
 		let save = apiFirebase.updateList(
 			id,
 			type,
 			idMovie,
 			movie.poster_path,
 			movie.original_title,
-			"listMark"
+			typeList,
+			indexAcc,
+			inCreateAcc
 		);
 		alert(movie.original_title + " foi adicionado na sua lista");
 		return save;
 	}
-	function handleMarkWatch() {
-		let save = apiFirebase.updateList(
-			id,
-			type,
-			idMovie,
-			movie.poster_path,
-			movie.original_title,
-			"listWatch"
-		);
-		alert(movie.original_title + " foi adicionado nos filmes assistidos");
-		return save;
-	}
+	// function handleMarkWatch() {
+	// 	let save = apiFirebase.updateList(
+	// 		id,
+	// 		type,
+	// 		idMovie,
+	// 		movie.poster_path,
+	// 		movie.original_title,
+	// 		"listWatch",
+	// 		indexAcc,
+	// 		inCreateAcc
+	// 	);
+	// 	alert(movie.original_title + " foi adicionado nos filmes assistidos");
+	// 	return save;
+	// }
 
 	return (
 		<Container>
@@ -56,10 +63,10 @@ const MovieDesc = () => {
 					<p>{movie.overview}</p>
 				</div>
 				<div className="functions">
-					<button onClick={handleSaveMyList}>
+					<button onClick={() => handleSave("listMark")}>
 						<MdBookmark size={30} />
 					</button>
-					<button onClick={handleMarkWatch}>
+					<button onClick={() => handleSave("listWatch")}>
 						<MdPlayArrow size={30} />
 					</button>
 					<button onClick={() => history.goBack(`account/${id}/movie/${type}`)}>
