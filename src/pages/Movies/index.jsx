@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Container } from "./styles";
 import axios from "axios";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
-import { API_KEY } from "../../Tmdb";
+import { apiTMDB, API_KEY } from "../../Tmdb";
 import history from "../../history";
 import { IndexAcc } from "../../Context/dataContext";
 import { useParams } from "react-router-dom";
@@ -17,11 +17,17 @@ const Movies = () => {
 	const [myWatch, setMyWatch] = useState([""]);
 
 	useEffect(() => {
-		axios
+		let kidUrl =
+			"&language=pt-BR&sort_by=popularity.desc&certification_country=BR&certification=L&certification.lte=L&include_adult=false&include_video=false&page=1";
+
+		apiTMDB
 			.get(
-				`https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR`
+				`discover/movie?api_key=${API_KEY}&sort_by=popularity.desc&certification_country=BR${
+					type === "kid" ? kidUrl : ""
+				}`
 			)
 			.then((res) => setListMovies(res.data.results));
+
 		let listRef = db.collection("users").doc(id);
 		listRef.get().then((res) => setMyList(res.data()[type].listMark));
 
