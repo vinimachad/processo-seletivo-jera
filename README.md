@@ -1,5 +1,7 @@
 # Processo Seletivo Jera
 
+![mockup do projeto](./assets/mockup.png)
+
 Projeto foi realizado com base nas informações passadas pelo documento do desafio.
 
 ## Objetivo Geral
@@ -27,29 +29,18 @@ A lista de filmes deverá estar associada ao perfil, não a conta, por exemplo: 
 
 ## Instalação
 
-Você precisará ter o [NodeJS](https://nodejs.org) instalado na sua máquina, e, após isso, clonar este repositório:
-
 ```sh
-  $ git clone https://github.com/maateusilva/youtube-context-api.git
+$ git clone https://github.com/vinimachad/processo-seletivo-jera.git
 ```
 
-Depois disso, instale as dependências do Front-end e do Back-end:
+Depois disso, instale as dependências do Front-end:
 
 ```sh
-  $ cd youtube-context-api/backend && yarn install # ou npm install
-  $ cd ../starter && yarn install # ou npm install
+$ cd processo-seletivo-jera && yarn install # ou npm install
 ```
 
 ## Executando a aplicação
 
-Primeiro acesse a pasta do back-end e execute o seguinte comando:
-
 ```sh
-  $ yarn dev # ou npm run dev
-```
-
-Agora é só executar o front-end:
-
-```sh
-  $ yarn start # ou npm start
+$ yarn start # ou npm start
 ```
