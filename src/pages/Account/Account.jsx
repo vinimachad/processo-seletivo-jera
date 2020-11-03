@@ -20,7 +20,7 @@ import otherImage from "../../assets/icon.png";
 export default function Users() {
 	const { setIndexAcc } = IndexAcc();
 	const { setAuthenticated } = IsAuthenticated();
-	const { setInCreateAcc } = InCreateAcc();
+	const { setInCreateAcc, setName } = InCreateAcc();
 	const { id } = useParams();
 
 	const [openModal, setOpenModal] = useState(false);
@@ -37,8 +37,7 @@ export default function Users() {
 			.then((res) => {
 				setAccounts(res.data().accounts);
 			});
-	}, [accounts]);
-
+	}, [openModal]);
 	function handleLogOut() {
 		apiFirebase.signOut();
 		setAuthenticated(false);
@@ -46,6 +45,12 @@ export default function Users() {
 	function handleToMovies(type, indexAcc) {
 		history.push(`/account/${id}/movie/${type}`);
 		setIndexAcc(indexAcc);
+		if (indexAcc !== undefined) {
+			setInCreateAcc(true);
+			setName(accounts[indexAcc].name);
+		} else {
+			setInCreateAcc(false);
+		}
 	}
 	async function handleCreateProfile() {
 		let name = await nameRef.current?.value;
@@ -61,19 +66,21 @@ export default function Users() {
 					{
 						name,
 						type,
-						listMark: [],
-						listWatch: [],
 					},
 				],
 			});
+			await docRef.update({
+				[name]: {
+					listMark: [],
+					listWatch: [],
+				},
+			});
 			setOpenModal(false);
-			setInCreateAcc(true);
 		} else {
 			alert("Oopss..,Você só pode ter 4 perfis por conta :/");
 			setOpenModal(false);
 		}
 	}
-
 	return (
 		<Container>
 			{openModal ? (

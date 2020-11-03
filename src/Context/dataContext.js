@@ -7,6 +7,7 @@ export default function ProviderContexts({ children }) {
 	const [authenticated, setAuthenticated] = useState(false);
 	const [indexAcc, setIndexAcc] = useState(null);
 	const [inCreateAcc, setInCreateAcc] = useState(false);
+	const [name, setName] = useState("");
 	return (
 		<Context.Provider
 			value={{
@@ -18,6 +19,8 @@ export default function ProviderContexts({ children }) {
 				setIndexAcc,
 				inCreateAcc,
 				setInCreateAcc,
+				name,
+				setName,
 			}}
 		>
 			{children}
@@ -42,6 +45,6 @@ export function IndexAcc() {
 }
 export function InCreateAcc() {
 	const context = useContext(Context);
-	const { inCreateAcc, setInCreateAcc } = context;
-	return { inCreateAcc, setInCreateAcc };
+	const { inCreateAcc, setInCreateAcc, name, setName } = context;
+	return { inCreateAcc, setInCreateAcc, name, setName };
 }

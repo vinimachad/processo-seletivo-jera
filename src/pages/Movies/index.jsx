@@ -5,7 +5,7 @@ import axios from "axios";
 import SearchHeaderMovies from "../../components/SearchHeaderMovies";
 import { apiTMDB, API_KEY } from "../../Tmdb";
 import history from "../../history";
-import { IndexAcc } from "../../Context/dataContext";
+import { InCreateAcc, IndexAcc } from "../../Context/dataContext";
 import { useParams } from "react-router-dom";
 import { db } from "../../firebase/apiFirebase";
 const Movies = () => {
@@ -13,8 +13,9 @@ const Movies = () => {
 	const { id, type } = useParams();
 	const { indexAcc } = IndexAcc();
 	const [listMovies, setListMovies] = useState([""]);
-	const [myList, setMyList] = useState([""]);
-	const [myWatch, setMyWatch] = useState([""]);
+	const [myList, setMyList] = useState(null);
+	const [myWatch, setMyWatch] = useState(null);
+	const { inCreateAcc, name } = InCreateAcc();
 
 	useEffect(() => {
 		let kidUrl =
@@ -29,9 +30,16 @@ const Movies = () => {
 			.then((res) => setListMovies(res.data.results));
 
 		let listRef = db.collection("users").doc(id);
-		listRef.get().then((res) => setMyList(res.data()[type].listMark));
 
-		listRef.get().then((res) => setMyWatch(res.data()[type].listWatch));
+		if (inCreateAcc) {
+			listRef.get().then((res) => setMyList(res.data()[name].listMark));
+
+			listRef.get().then((res) => setMyWatch(res.data()[name].listWatch));
+		} else {
+			listRef.get().then((res) => setMyList(res.data()[type].listMark));
+
+			listRef.get().then((res) => setMyWatch(res.data()[type].listWatch));
+		}
 	}, []);
 	function handleSearch(e) {
 		e.preventDefault();
@@ -48,7 +56,7 @@ const Movies = () => {
 	return (
 		<Container>
 			<SearchHeaderMovies inpReference={searchRef} onSubmit={handleSearch} />
-			{myList !== "" ? (
+			{myList !== null ? (
 				<section className="row-list">
 					<h1>Minha Lista</h1>
 					<ul className="grid-movies">
@@ -67,7 +75,7 @@ const Movies = () => {
 			) : (
 				""
 			)}
-			{myWatch !== "" ? (
+			{myWatch !== null ? (
 				<section className="row-list">
 					<h1>Volte a assistir</h1>
 					<ul className="grid-movies">

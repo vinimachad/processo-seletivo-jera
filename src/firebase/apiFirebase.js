@@ -72,9 +72,7 @@ export default {
 		let userRef = await db.collection("users").doc(id);
 		let getData = await userRef.get();
 		let data = await getData.data();
-		let { kid, adult, accounts: acc } = data;
-		let account = acc[indexAcc];
-		console.log(acc);
+		let { kid, adult, accounts: acc, ...all } = data;
 		if (typeAcc === "kid") {
 			if (inCreateAcc === false) {
 				await db
@@ -87,14 +85,16 @@ export default {
 						},
 					});
 			} else {
+				let account = acc[indexAcc].name;
+
 				await db
 					.collection("users")
 					.doc(id)
 					.update({
-						// [`accounts[${indexAcc}]`]: {
-						// 	[typeList]: [...account[typeList], { poster, idMark, title }],
-						// },
-						accounts: [...acc],
+						[account]: {
+							...all[account],
+							[typeList]: [...all[account][typeList], { poster, idMark, title }],
+						},
 					});
 			}
 		}
@@ -110,16 +110,16 @@ export default {
 						},
 					});
 			} else {
+				let account = acc[indexAcc].name;
+
 				await db
 					.collection("users")
 					.doc(id)
 					.update({
-						accounts: [
-							{
-								...acc,
-								[typeList]: [...account[typeList], { poster, idMark, title }],
-							},
-						],
+						[account]: {
+							...all[account],
+							[typeList]: [...all[account][typeList], { poster, idMark, title }],
+						},
 					});
 			}
 		}
