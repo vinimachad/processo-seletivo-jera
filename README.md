@@ -4,6 +4,9 @@
 
 Projeto foi realizado com base nas informações passadas pelo documento do desafio.
 
+#### Video no YouTube
+[https://www.youtube.com/watch?v=2WOIOCsnZjE](https://www.youtube.com/watch?v=2WOIOCsnZjE)
+
 ## Objetivo Geral
 
 Desenvolver uma aplicação Web ou Mobile para o armazenamento de uma lista de filmes que o usuário gostaria de assistir. Essa lista deverá ser pega pela API do TheMovieDB [https://www.themoviedb.org/documentation/api](https://www.themoviedb.org/documentation/api).
